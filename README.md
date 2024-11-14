@@ -17,6 +17,11 @@
 - reveal deleted cards after clicking the "Reveal" button - deleted card variant shouldn't contain the description
 - write the code, so in the future you will be able to add "revert" functionality
 
+### Behavior
+
+- cards by default should be collapsed
+- expanded/deleted cards' state needs to be persisted after refreshing (regardless of isVisible property)
+
 ### Miscellaneous
 
 - add a refresh button (just like the "Reveal" button)
