@@ -1,7 +1,18 @@
 import { create } from "zustand";
+import { ListItem } from "./api/getListData";
 
-type State = {};
+type State = {
+    deletedCards: ListItem[];
+};
 
-type Actions = {};
+type Actions = {
+    deleteCard: (item: ListItem) => void;
+};
 
-export const useStore = create<State & Actions>((set) => ({}));
+export const useStore = create<State & Actions>((set) => ({
+    deletedCards: [],
+    deleteCard: (item) =>
+        set((state) => ({
+            deletedCards: [...state.deletedCards, item],
+        })),
+}));
