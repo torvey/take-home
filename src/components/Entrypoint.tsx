@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
 import { ListItem, useGetListData } from "../api/getListData";
+import { useStore } from "../store";
 import { Card } from "./List";
 import { Spinner } from "./Spinner";
 
@@ -9,8 +10,18 @@ export const Entrypoint = () => {
 
     const listQuery = useGetListData();
 
-    // TOOD
-    // const deletedCards: DeletedListItem[] = [];
+    const deleteCard = useStore((state) => state.deleteCard);
+    const deletedCards = useStore((state) => state.deletedCards);
+
+    const handleDelete = useCallback(
+        (item: ListItem) => {
+            deleteCard(item);
+            setVisibleCards((prev) =>
+                prev.filter((card) => card.id !== item.id)
+            );
+        },
+        [deleteCard]
+    );
 
     const toggleExpand = useCallback((id: number) => {
         setExpandedCardsIds((prev) => {
@@ -46,8 +57,9 @@ export const Entrypoint = () => {
                             key={card.id}
                             title={card.title}
                             description={card.description}
-                            handleExpand={() => toggleExpand(card.id)}
                             isExpanded={expandedCardsIds.includes(card.id)}
+                            handleExpand={() => toggleExpand(card.id)}
+                            handleDelete={() => handleDelete(card)}
                         />
                     ))}
                 </div>
@@ -65,9 +77,13 @@ export const Entrypoint = () => {
                     </button>
                 </div>
                 <div className="flex flex-col gap-y-3">
-                    {/* {deletedCards.map((card) => (
-            <Card key={card.id} card={card} />
-          ))} */}
+                    {deletedCards.map((card) => (
+                        <Card
+                            key={card.id}
+                            title={card.title}
+                            description={card.description}
+                        />
+                    ))}
                 </div>
             </div>
         </div>
