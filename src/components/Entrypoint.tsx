@@ -67,7 +67,7 @@ export const Entrypoint = () => {
             <div className="w-full max-w-xl">
                 <div className="flex items-center justify-between">
                     <h1 className="mb-1 font-medium text-lg">
-                        Deleted Cards (0)
+                        Deleted Cards ({deletedCards.length})
                     </h1>
                     <button
                         disabled
