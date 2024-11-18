@@ -38,13 +38,25 @@ export const Entrypoint = () => {
         setShowDeleted((prev) => !prev);
     }, []);
 
+    const handleRefresh = useCallback(() => {
+        listQuery.refetch();
+    }, [listQuery]);
+
     useEffect(() => {
         if (listQuery.isLoading) {
             return;
         }
 
-        setVisibleCards(listQuery.data?.filter((item) => item.isVisible) ?? []);
-    }, [listQuery.data, listQuery.isLoading]);
+        setVisibleCards(
+            listQuery.data?.filter(
+                (item) =>
+                    item.isVisible &&
+                    !deletedCards.find(
+                        (deletedItem) => deletedItem.id === item.id
+                    )
+            ) ?? []
+        );
+    }, [listQuery.data, listQuery.isLoading, deletedCards]);
 
     if (listQuery.isLoading) {
         return <Spinner />;
@@ -53,9 +65,17 @@ export const Entrypoint = () => {
     return (
         <div className="flex gap-x-16">
             <div className="w-full max-w-xl">
-                <h1 className="mb-1 font-medium text-lg">
-                    My Awesome List ({visibleCards.length})
-                </h1>
+                <div className="flex items-center justify-between">
+                    <h1 className="mb-1 font-medium text-lg">
+                        My Awesome List ({visibleCards.length})
+                    </h1>
+                    <button
+                        onClick={handleRefresh}
+                        className="text-white text-sm transition-colors hover:bg-gray-800 disabled:bg-black/75 bg-black rounded px-3 py-1"
+                    >
+                        Refresh
+                    </button>
+                </div>
                 <div className="flex flex-col gap-y-3">
                     {visibleCards.map((card) => (
                         <Card
@@ -82,7 +102,7 @@ export const Entrypoint = () => {
                     </button>
                 </div>
                 <div
-                    className={`flex flex-col gap-y-3 ${
+                    className={`flex flex-col gap-y-3 transition-opacity ${
                         showDeleted ? "opacity-100" : "opacity-0"
                     }`}
                 >
@@ -90,7 +110,6 @@ export const Entrypoint = () => {
                         <Card
                             key={card.id}
                             title={card.title}
-                            description={card.description}
                             // TODO: add revert functionality in the future
                             // handleDelete={() => handleRevert(card)}
                         />

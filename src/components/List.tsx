@@ -1,7 +1,6 @@
 import { FC } from "react";
 import { ListItem } from "../api/getListData";
-import { DeleteButton, ExpandButton } from "./Buttons";
-import { ChevronUpIcon } from "./icons";
+import { DeleteButton, ToggleButton } from "./Buttons";
 
 type CardProps = {
     title: ListItem["title"];
@@ -24,14 +23,10 @@ export const Card: FC<CardProps> = ({
                 <h1 className="font-medium">{title}</h1>
                 <div className="flex">
                     {handleExpand && (
-                        <ExpandButton
+                        <ToggleButton
+                            isExpanded={!!isExpanded}
                             onClick={handleExpand}
-                            className={`transition-transform duration-300 ${
-                                isExpanded ? "" : "rotate-180"
-                            }`}
-                        >
-                            <ChevronUpIcon />
-                        </ExpandButton>
+                        />
                     )}
                     {handleDelete && <DeleteButton onClick={handleDelete} />}
                 </div>
