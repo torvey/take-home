@@ -102,7 +102,7 @@ export const Entrypoint = () => {
                     </button>
                 </div>
                 <div
-                    className={`flex flex-col gap-y-3 ${
+                    className={`flex flex-col gap-y-3 transition-opacity ${
                         showDeleted ? "opacity-100" : "opacity-0"
                     }`}
                 >
