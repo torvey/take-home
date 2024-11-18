@@ -7,6 +7,7 @@ import { Spinner } from "./Spinner";
 export const Entrypoint = () => {
     const [visibleCards, setVisibleCards] = useState<ListItem[]>([]);
     const [expandedCardsIds, setExpandedCardsIds] = useState<number[]>([]);
+    const [showDeleted, setShowDeleted] = useState(false);
 
     const listQuery = useGetListData();
 
@@ -31,6 +32,10 @@ export const Entrypoint = () => {
 
             return [...prev, id];
         });
+    }, []);
+
+    const handleReveal = useCallback(() => {
+        setShowDeleted((prev) => !prev);
     }, []);
 
     useEffect(() => {
@@ -70,13 +75,17 @@ export const Entrypoint = () => {
                         Deleted Cards ({deletedCards.length})
                     </h1>
                     <button
-                        disabled
+                        onClick={handleReveal}
                         className="text-white text-sm transition-colors hover:bg-gray-800 disabled:bg-black/75 bg-black rounded px-3 py-1"
                     >
-                        Reveal
+                        {showDeleted ? "Hide" : "Reveal"}
                     </button>
                 </div>
-                <div className="flex flex-col gap-y-3">
+                <div
+                    className={`flex flex-col gap-y-3 ${
+                        showDeleted ? "opacity-100" : "opacity-0"
+                    }`}
+                >
                     {deletedCards.map((card) => (
                         <Card
                             key={card.id}
