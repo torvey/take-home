@@ -91,6 +91,8 @@ export const Entrypoint = () => {
                             key={card.id}
                             title={card.title}
                             description={card.description}
+                            // TODO: add revert functionality in the future
+                            // handleDelete={() => handleRevert(card)}
                         />
                     ))}
                 </div>
